@@ -1,0 +1,17 @@
+{
+  "name": "microweber-modules/whmcs-connector",
+  "description": "WHMCS Connector",
+  "license": "MIT",
+  "homepage": "https://microweber.org/modules/microweber-modules/whmcs-connector",
+  "authors": [
+    {
+      "name": "Microweber",
+      "email": "support@microweber.com"
+    }
+  ],
+  "keywords": [
+    "whmcs-connector"
+  ],
+  "type": "microweber-module",
+  "target-dir": "whmcs-connector"
+}
