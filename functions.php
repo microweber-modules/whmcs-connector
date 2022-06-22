@@ -1,14 +1,11 @@
 <?php
 
-
 if (!defined('MW_WHMCS_CONNECTOR_SETTINGS_FILE')) {
     define('MW_WHMCS_CONNECTOR_SETTINGS_FILE', __DIR__ . DIRECTORY_SEPARATOR . 'settings.json');
     define('MW_WHMCS_CONNECTOR_SETTINGS_FILE_LOCAL', storage_path() . DIRECTORY_SEPARATOR . 'whmcs_connector.json');
 }
 
-
 event_bind('mw.admin.dashboard.main', function ($params = false) {
-
 
     $is_data = mw()->user_manager->session_get('mw_hosting_data');
     if ($is_data and is_array($is_data)) {
@@ -16,12 +13,6 @@ event_bind('mw.admin.dashboard.main', function ($params = false) {
     }
 
 });
-
-
-event_bind('on_load', function ($params = false) {
-
-});
-
 
 event_bind('mw.user.before_login', function ($params = false) {
     return mw_whmcs_remote_user_login($params);
@@ -31,15 +22,23 @@ event_bind('mw.ui.admin.login.form.after', function ($params = false) {
 
     $brandingContent = @file_get_contents(MW_WHITE_LABEL_SETTINGS_FILE_LOCAL);
     $whiteLabelSettings = json_decode($brandingContent, TRUE);
-    if (is_array($whiteLabelSettings)) {
+    if (empty($whiteLabelSettings)) {
+        return;
+    }
 
+    if (is_array($whiteLabelSettings)) {
         if (isset($whiteLabelSettings['external_login_server_enable']) && $whiteLabelSettings['external_login_server_enable'] == false) {
             return;
         }
-
     }
 
-    $btn_url = mw_whmcs_remote_get_connector_url().'/index.php?m=microweber_addon&function=go_to_product&domain='. site_url();
+    $whmcsUrl = mw_whmcs_remote_get_connector_url();
+    $whmcsUrl = trim($whmcsUrl);
+    if (empty($whmcsUrl)) {
+        return;
+    }
+
+    $btn_url = $whmcsUrl.'/index.php?m=microweber_addon&function=go_to_product&domain='. site_url();
 
     if (strpos(mw_root_path(), 'public_html') !== false) {
         $username_path = explode('public_html', mw_root_path());
@@ -56,7 +55,7 @@ event_bind('mw.ui.admin.login.form.after', function ($params = false) {
             }
         }
     }
-    
+
     if (strpos(mw_root_path(), 'httpdocs') !== false) {
     $domain_name_path = explode('httpdocs', mw_root_path());
         if (isset($domain_name_path[0])) {
@@ -72,7 +71,7 @@ event_bind('mw.ui.admin.login.form.after', function ($params = false) {
             }
         }
     }
-    
+
     print "<center>";
     print "<h4>" . _e('OR', true). "</h4>";
 
@@ -276,7 +275,7 @@ function mw_whmcs_remote_user_login_exec($params)
     return $data;
 
 }
- 
+
 
 function showMicroweberAdsBar() {
 
@@ -346,8 +345,8 @@ event_bind('mw.front', function () {
             width: 100%;
             overflow: hidden;
         }
-        .sticky-nav .sticky, 
-        .navigation-holder .navigation, 
+        .sticky-nav .sticky,
+        .navigation-holder .navigation,
         .header-section.sticker{
             top: 54px;
         }
