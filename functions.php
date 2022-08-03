@@ -282,8 +282,9 @@ function showMicroweberAdsBar() {
     $showBar = false;
     $showBarUrl = false;
 
-    $whmcsSettingsFile = modules_path() . 'whmcs_connector/settings.json';
+    $whmcsSettingsFile = modules_path() . 'whmcs-connector/settings.json';
     $whmcsSettingsFile = normalize_path($whmcsSettingsFile, false);
+
     if (is_file($whmcsSettingsFile)) {
 
         $whmcsUrl = false;
@@ -308,7 +309,12 @@ function showMicroweberAdsBar() {
                 $checkDomain = @json_decode($checkDomain, true);
 
                 if (isset($checkDomain['free']) && $checkDomain['free'] == true && isset($checkDomain['ads_bar_url'])) {
-                    $showBarUrl = $whmcsUrl . $checkDomain['ads_bar_url'];
+                    $showBarUrl = $whmcsUrl .'/'. $checkDomain['ads_bar_url'];
+
+                    if (!request()->secure()) {
+                        $showBarUrl = str_replace('https://','http://', $showBarUrl);
+                    }
+
                     $showBar = true;
                 }
             }
