@@ -311,14 +311,6 @@ event_bind('mw.front', function () {
             width: 100%;
             overflow: hidden;
         }
-        .sticky-nav .sticky,
-        .navigation-holder .navigation,
-        .header-section.sticker{
-            top: 54px;
-        }
-        .nav-bar {
-            margin-top: 54px !important;
-        }
         </style>
     ';
 
