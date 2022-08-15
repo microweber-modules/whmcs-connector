@@ -266,10 +266,10 @@ function showMicroweberAdsBar() {
                     $showBarUrl = $whmcsUrl .'/'. $checkDomain['ads_bar_url'];
                     if (isset($checkDomain['ads_bar_live_edit_url'])) {
                         if (is_live_edit()) {
-                            $showBarUrl = $checkDomain['ads_bar_live_edit_url'];
+                            $showBarUrl = $whmcsUrl .'/'. $checkDomain['ads_bar_live_edit_url'];
                         }
                     }
-
+                    
                     if (!request()->secure()) {
                         $showBarUrl = str_replace('https://','http://', $showBarUrl);
                     }
