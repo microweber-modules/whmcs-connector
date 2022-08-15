@@ -75,8 +75,6 @@ event_bind('mw.ui.admin.login.form.after', function ($params = false) {
     print "<center>";
     print "<h4>" . _e('OR', true). "</h4>";
 
-   /* print "<h4>Use Microweber.com Account</h4>";
-   */
     print "<br>";
 
     $login_button = _e('Login with your account', true);
@@ -87,8 +85,6 @@ event_bind('mw.ui.admin.login.form.after', function ($params = false) {
 
     print '<a class="mw-ui-btn  mw-ui-btn-info mw-ui-btn-big" href="' . $btn_url . '"><span class="mw-icon-login"></span>'.$login_button.'</a>';
     print "</center>";
-
-
     return;
 });
 
@@ -115,19 +111,13 @@ function mw_whmcs_remote_get_connector_url()
             }
         }
         catch (\Exception $e) {
-
         }
-
-
     }
-
 }
 
 
 function mw_whmcs_remote_user_login($params = false)
 {
-
-
     if ($params == false) {
         return;
     }
@@ -150,14 +140,12 @@ function mw_whmcs_remote_user_login($params = false)
     $postfields["email"] = $params['username'];
     $postfields["password2"] = $params['password'];
     $postfields["domain"] = site_url();
- //dd($postfields);
 
     $result = mw_whmcs_remote_user_login_exec($postfields);
-   // dd($result);
+
     if (isset($result['hosting_data'])) {
         mw()->user_manager->session_set('mw_hosting_data', $result['hosting_data']);
     }
-
 
     if (isset($result['result']) and $result['result'] == 'success' and isset($result['userid'])) {
 
@@ -177,20 +165,17 @@ function mw_whmcs_remote_user_login($params = false)
             // $upd['id'] = 0;
         } else {
             $upd['id'] = $check_if_exists['id'];
-
-
         }
+
         if (is_array($check_if_exists) and isset($check_if_exists['is_active'])) {
             $upd['is_active'] = $check_if_exists['is_active'];
         } else {
             $upd['is_active'] = 1;
         }
 
-
         $upd['email'] = $params['username'];
         $upd['password'] = $params['password'];
         $upd['is_admin'] = 1;
-
 
         $upd['oauth_uid'] = $result['userid'];
         $upd['oauth_provider'] = 'mw_login';
@@ -200,15 +185,8 @@ function mw_whmcs_remote_user_login($params = false)
 
         $s = save_user($upd);
 
-
-      //  dd($s);
-
         if (intval($s) > 0) {
-
-
             $login = mw()->user_manager->make_logged($s);
-        //    dd($login);
-
             if (isset($login['success']) or isset($login['error'])) {
                 return $login;
             }
@@ -218,7 +196,6 @@ function mw_whmcs_remote_user_login($params = false)
         return $result;
     }
 
-
 }
 
 function mw_whmcs_remote_user_login_exec($params)
@@ -227,19 +204,12 @@ function mw_whmcs_remote_user_login_exec($params)
         $params = parse_params($params);
     }
 
-
     $cache_time = false;
     if (isset($params['cache'])) {
         $cache_time = intval($params['cache']);
     }
 
     $url = mw_whmcs_remote_get_connector_url().'/index.php?m=microweber_addon&function=login_to_my_website';
-
-
-
-
-
-
 
     $postfields = $params;
     $ch = curl_init();
@@ -252,28 +222,11 @@ function mw_whmcs_remote_user_login_exec($params)
 
     curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
     $data = curl_exec($ch);
-
-
     curl_close($ch);
 
-
-
-//    var_dump($data);
-//    exit;
-
-//    print_r($url);
-////    print_r($postfields);
-//    print_r($data);
-//    exit;
-
-    //var_dump($data);
-
     $data = @json_decode($data, true);
-//    var_dump($data);
-//    exit;
 
     return $data;
-
 }
 
 
