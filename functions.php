@@ -370,7 +370,7 @@ event_bind('mw.front', function () {
 
     $bar = showMicroweberAdsBar();
 
-    if ($bar['show'] && !is_live_edit()) {
+    if ($bar['show']) {
        mw()->template->foot($css . '<div class="js-microweber-add-iframe-wrapper"><iframe class="js-microweber-add-iframe" scrolling="no" frameborder="0" src="'.$bar['iframe_url'].'"></iframe></div>');
     }
 
