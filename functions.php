@@ -330,6 +330,12 @@ function showMicroweberAdsBar() {
 }
 
 event_bind('mw.front', function () {
+    
+    $addIframeCss = 'top: 0;';
+    if (is_live_edit()) {
+        $addIframeCss = 'bottom: 0;';
+    }
+    
     $css = '
         <style>
         .js-microweber-add-iframe-wrapper {
@@ -347,7 +353,7 @@ event_bind('mw.front', function () {
             border: 0;
             left: 0;
             right: 0;
-            top: 0;
+            '.$addIframeCss.'
             width: 100%;
             overflow: hidden;
         }
